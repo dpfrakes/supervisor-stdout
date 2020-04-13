@@ -18,10 +18,11 @@ def main():
         write_stdout('RESULT %s\n%s'%(len(data), data)) # transition from READY to ACKNOWLEDGED
 
 def event_handler(event, response):
+    response = response.decode()
     line, data = response.split('\n', 1)
     headers = dict([ x.split(':') for x in line.split() ])
     lines = [l for l in data.split('\n') if l not in ['', '\n']]
-    prefix = '%s %s | '%(headers['processname'], headers['channel'])
+    prefix = f'{headers["processname"]} {headers["channel"]} | '
     print('\n'.join([ prefix + l for l in lines ]))
 
 if __name__ == '__main__':
